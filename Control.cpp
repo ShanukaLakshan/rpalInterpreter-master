@@ -256,7 +256,7 @@ void Control::addCtrl(treeNode* node, int type, string value, vector<string> *va
     temp = new Control(Control::DUMMY);
     break;
   default:
-    printf ("This ree node handled. val: %s type: %d", value.c_str(), type);
+    printf ("This Tree node handled. val: %s type: %d", value.c_str(), type);
     break;
   };
   ctrlStruct->push_back(temp);
