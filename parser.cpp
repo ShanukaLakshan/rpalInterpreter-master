@@ -1,9 +1,4 @@
-/*
- * parser.cpp
- *
- *  Created on: Mar 1, 2016
- *      Author: sachin
- */
+
 
 #include "parser.h"
 
@@ -28,7 +23,6 @@ void parser::printST(){
     TreeStandardizer *ts = new TreeStandardizer(treeStack.top());
     if (!treeStack.empty())
         treePrettyPrint(treeStack.top(), 0);
-    //evaluateProg();
     lex->lexerReset();
 }
 
@@ -53,10 +47,10 @@ void parser::parse(){
 		printf ("Error: Stack not empty at the end of parsing\n");
 		exit(0);
 	} else if (lex->getNextToken()->tokType != TOK_EOF){
-		printf ("Error: Parsing finished input still remaining\n");
+		printf ("Error: Parsing done input still remaining in memory\n");
 		exit(0);
 	}
-	if (PARSERLOGS) printf ("Parsing Finished. AST Generated\n");
+	if (PARSERLOGS) printf ("Parsing Done. AST Successfully Generated! \n");
 }
 
 bool parser::isKeyword(string val){
@@ -104,7 +98,8 @@ void parser::buildTree(string nodeStr, int numChildNodes, int type){
                 treeStack.pop();
                 if (treeStack.size() != 0){
                     treeStack.top()->siblingNode = tempNode;
-                } else if (treeStack.size() == 0) { //Stack cannot be empty here. We have one more element to pop before we can build/push the requested tree
+                } else if (treeStack.size() == 0) { 
+					//Stack cannot be empty here. We have one more element to pop before we can build/push the requested tree
                     printf ("Parse Error: Empty Stack\n");
                     exit(0);
                 }
@@ -158,10 +153,7 @@ void parser::treePrettyPrint(treeNode* topNode, int numDots){
 	}
 }
 
-/* E    -> ’let’ D ’in’ E                          => ’let’
-     -> ’fn’ Vb+ ’.’ E                          => ’lambda’
-     ->  Ew;
-*/
+
 void parser::E(){
 	if (PARSERLOGS) printf ("Proc E next token = %s\n", nextToken->tokValue.c_str());
 	if (nextToken->tokValue == "let")
@@ -186,8 +178,7 @@ void parser::E(){
 	}
 }
 
-/* Ew   -> T ’where’ Dr                            => ’where’
-   -> T;*/
+
  void parser::Ew(){
 	if (PARSERLOGS) printf ("Proc Ew next token = %s\n", nextToken->tokValue.c_str());
  	T();
@@ -199,9 +190,6 @@ void parser::E(){
  	}
  }
 
- /* T    -> Ta ( ’,’ Ta )+                          => ’tau’
-     -> Ta ;
-  */
  void parser::T(){
 	 if (PARSERLOGS) printf ("Proc T next token = %s\n", nextToken->tokValue.c_str());
 	 int n = 0;
@@ -216,9 +204,6 @@ void parser::E(){
 	 }
  }
 
- /* Ta   -> Ta ’aug’ Tc                             => ’aug’
-     -> Tc ;
-  */
  void parser::Ta(){
 	 if (PARSERLOGS) printf ("Proc Ta next token = %s\n", nextToken->tokValue.c_str());
 	 Tc();
@@ -229,9 +214,7 @@ void parser::E(){
 	 }
  }
 
- /* Tc   -> B ’->’ Tc ’|’ Tc                      => '->'
-     -> B ;
-  */
+
  void parser::Tc(){
 	 if (PARSERLOGS) printf ("Proc Tc next token = %s\n", nextToken->tokValue.c_str());
 	 B();
@@ -244,9 +227,6 @@ void parser::E(){
 	 }
  }
 
-/* B    -> B ’or’ Bt                               => ’or’
-     -> Bt ;
-  */
 void parser::B(){
 	if (PARSERLOGS) printf ("Proc B next token = %s\n", nextToken->tokValue.c_str());
 	Bt();
@@ -257,9 +237,6 @@ void parser::B(){
 	}
 }
 
-/*  Bt   -> Bt ’&’ Bs                               => ’&’
-     -> Bs ;
-  */
 void parser::Bt(){
 	if (PARSERLOGS) printf ("Proc Bt next token = %s\n", nextToken->tokValue.c_str());
 	Bs();
@@ -270,9 +247,7 @@ void parser::Bt(){
 	}
 }
 
-/* Bs   -> ’not’ Bp                                => ’not’
-     -> Bp ;
-  */
+
 void parser::Bs(){
 	if (PARSERLOGS) printf ("Proc Bs next token = %s\n", nextToken->tokValue.c_str());
 	if (nextToken->tokValue == "not"){
@@ -284,14 +259,6 @@ void parser::Bs(){
 	}
 }
 
-/* Bp   -> A (’gr’ | ’>’ ) A                       => ’gr’
-     -> A (’ge’ | ’>=’) A                       => ’ge’
-     -> A (’ls’ | ’<’ ) A                       => ’ls’
-     -> A (’le’ | ’<=’) A                       => ’le’
-     -> A ’eq’ A                                => ’eq’
-     -> A ’ne’ A                                => ’ne’
-     -> A ;
-  */
 void parser::Bp(){
 	if (PARSERLOGS) printf ("Proc Bp next token = %s\n", nextToken->tokValue.c_str());
 	A();
@@ -334,12 +301,7 @@ void parser::Bp(){
 	}
 }
 
-/* A    -> A ’+’ At                                => ’+’
-     -> A ’-’ At                                => ’-’
-     ->   ’+’ At
-     ->   ’-’ At                                => ’neg’
-     -> At ;
-  */
+
 void parser::A(){
 	if (PARSERLOGS) printf ("Proc A next token = %s\n", nextToken->tokValue.c_str());
 	string treeStr;
@@ -366,10 +328,7 @@ void parser::A(){
 	}
 }
 
-/* At   -> At ’*’ Af                               => ’*’
-     -> At ’/’ Af                               => ’/’
-     -> Af ;
-  */
+
 void parser::At(){
 	if (PARSERLOGS) printf ("Proc At next token = %s\n", nextToken->tokValue.c_str());
 	string treeStr;
@@ -387,9 +346,6 @@ void parser::At(){
 	}
 }
 
-/* Af   -> Ap ’**’ Af                              => ’**’
-     -> Ap ;
-  */
 void parser::Af(){
 	if (PARSERLOGS) printf ("Proc Af next token = %s\n", nextToken->tokValue.c_str());
 	Ap();
@@ -400,9 +356,6 @@ void parser::Af(){
 	}
 }
 
-/* Ap   -> Ap ’@’ ’<IDENTIFIER>’ R                 => ’@’
-     -> R ;
-  */
 void parser::Ap(){
 	if (PARSERLOGS) printf ("Proc Ap next token = %s\n", nextToken->tokValue.c_str());
 	R();
@@ -415,9 +368,7 @@ void parser::Ap(){
 	}
 }
 
-/* R    -> R Rn                                    => ’gamma’
-     -> Rn ;
-*/
+
 void parser::R(){
 	if (PARSERLOGS) printf ("Proc R next token = %s\n", nextToken->tokValue.c_str());
 	Rn();
@@ -429,15 +380,7 @@ void parser::R(){
 	}
 }
 
-/* Rn   -> ’<IDENTIFIER>’
-     -> ’<INTEGER>’
-     -> ’<STRING>’
-     -> ’true’                                  => ’true’
-     -> ’false’                                 => ’false’
-     -> ’nil’                                   => ’nil’
-     -> ’(’ E ’)’
-     -> ’dummy’                                 => ’dummy’ ;
-*/
+
 void parser::Rn(){
 	if (PARSERLOGS) printf ("Proc Rn next token = %s\n", nextToken->tokValue.c_str());
 	if("(" == nextToken->tokValue){
@@ -478,9 +421,7 @@ void parser::Rn(){
 	}
 }
 
-/* D    -> Da ’within’ D                           => ’within’
-     -> Da ;
-  */
+
 void parser::D(){
 	if (PARSERLOGS) printf ("Proc D next token = %s\n", nextToken->tokValue.c_str());
 	Da();
@@ -490,9 +431,7 @@ void parser::D(){
 		buildTree("within", 2, treeNode::WITHIN);
 	}
 }
-/*     Da   -> Dr ( ’and’ Dr )+                        => ’and’
-         -> Dr ;
-  */
+
 void parser::Da(){
 	if (PARSERLOGS) printf ("Proc Da next token = %s\n", nextToken->tokValue.c_str());
 	int n = 0;
@@ -506,9 +445,6 @@ void parser::Da(){
 		buildTree("and", n+1, treeNode::AND);
 }
 
-/*      Dr   -> ’rec’ Db                                => ’rec’
-         -> Db ;
-  */
 void parser::Dr(){
 	if (PARSERLOGS) printf ("Proc Dr next token = %s\n", nextToken->tokValue.c_str());
 	if (nextToken->tokValue == "rec"){
@@ -520,10 +456,7 @@ void parser::Dr(){
 	}
 }
 
-/* Db   -> Vl ’=’ E                              => ’=’
-     -> ’<IDENTIFIER>’ Vb+ ’=’ E              => ’fcn_form’
-     -> ’(’ D ’)’ ;
-  */
+
 void parser::Db(){
 	if (PARSERLOGS) printf ("Proc Db next token = %s\n", nextToken->tokValue.c_str());
 	if (nextToken->tokValue == "("){
@@ -552,10 +485,7 @@ void parser::Db(){
 	}
 }
 
-/*    Vb   -> ’<IDENTIFIER>’
-         -> ’(’ Vl ’)’
-         -> ’(’ ’)’                                 => ’()’;
-  */
+
 void parser::Vb(){
 	if (PARSERLOGS) printf ("Proc Vb next token = %s\n", nextToken->tokValue.c_str());
 	if(nextToken->tokType == TOK_IDENTIFIER){
@@ -577,7 +507,6 @@ void parser::Vb(){
 	}
 }
 
-//    Vl   -> ’<IDENTIFIER>’ list ’,’                 => ’,’?;
 void parser::Vl(){
 	if (PARSERLOGS) printf ("Proc Vl next token = %s\n", nextToken->tokValue.c_str());
 	int n = 0;
@@ -591,7 +520,6 @@ void parser::Vl(){
 			printf ("ERROR In Vl()\n");
 		}
 	}
-	//n+1 for the identifier that was read before Vl was called.
 	if (n > 0)
 		buildTree(",", n+1, treeNode::COMMA);
 }

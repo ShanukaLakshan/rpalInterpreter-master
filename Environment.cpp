@@ -1,9 +1,4 @@
-/*
- * Environment.cpp
- *
- *  Created on: Apr 22, 2016
- *      Author: sachin
- */
+
 
 #include "Environment.h"
 

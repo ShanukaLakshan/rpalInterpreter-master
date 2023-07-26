@@ -1,16 +1,11 @@
-/*
- * lexer.cpp
- *
- *  Created on: Mar 1, 2016
- *      Author: sachin
- */
+
 
 #include "lexer.h"
 
 using namespace std;
 
 lexer::lexer(std::ifstream* source) {
-	sourceFile = source; //change to buffer
+	sourceFile = source; 
 	lineCount = 1;
 	charCount = 1;
 }
@@ -41,7 +36,7 @@ bool lexer::isOperatorSymbol(char c){
 }
 
 bool lexer::isCommentChar(char c){
-	if (39 == c)  // char is '/'
+	if (39 == c) 
 		return true;
 	else
 		return false;
@@ -85,7 +80,7 @@ string lexer::tokenStrings(){
 		if (nextChar == '\\'){
 		    if ((nextPeek == 't' || nextPeek == 'n' || nextPeek == '\\' || nextPeek == '\''))
 		    {
-		        continue; //Valid escape sequence
+		        continue;
 		    } else {
 		        printf ("Invalid escape sequence\n");
 		        exit(0);
@@ -149,11 +144,12 @@ string lexer::tokenOperator(){
 	return tokStr;
 }
 
-//This function is called by the read method in parser to fetch the new token.
-//As per the rpal lexicon, the first character is used to determine which rule applies,
-//a specialized function is called based on the rule that is applicable and
-//subsequent characters are read till the newly read character differs from the selected rule.
-//This marks the end of token, at which point it is passed to the parser.
+// The read method in the parser invokes this function to retrieve the new token. 
+// According to the rpal lexicon, the first character determines the applicable rule, and a specific function is called accordingly. 
+// The function continues reading subsequent characters until the newly read character no longer conforms to the selected rule. 
+// This process signifies the completion of the token, which is then passed back to the parser.
+
+
 token* lexer::getNextToken(){
 	token* tok = new token();
 	string tokenizedLex;

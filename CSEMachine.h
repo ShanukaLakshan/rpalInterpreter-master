@@ -1,9 +1,4 @@
-/*
- * CSEMachine.h
- *
- *  Created on: Apr 21, 2016
- *      Author: sachin
- */
+
 
 #ifndef RPAL_COMPILER_CSEMACHINE_H_
 #define RPAL_COMPILER_CSEMACHINE_H_
@@ -79,4 +74,4 @@ public:
 };
 
 
-#endif /* RPAL_COMPILER_CSEMACHINE_H_ */
+#endif 

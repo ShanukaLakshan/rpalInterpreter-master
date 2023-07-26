@@ -1,9 +1,4 @@
-/*
- * token.h
- *
- *  Created on: Mar 1, 2016
- *      Author: sachin
- */
+
 #include <string>
 #ifndef TOKEN_H_
 #define TOKEN_H_
@@ -34,4 +29,4 @@ public:
 	int lineCount, charCount;
 };
 
-#endif /* TOKEN_H_ */
+#endif 

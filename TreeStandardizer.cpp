@@ -1,9 +1,4 @@
-/*
- * TreeStandardizer.cpp
- *
- *  Created on: Apr 20, 2016
- *      Author: sachin
- */
+
 
 #include "TreeStandardizer.h"
 
@@ -21,7 +16,7 @@ void TreeStandardizer::standardizeLET(treeNode* topNode){
     if (STANDARDIZERLOGS) printf ("CASE LET\n");
 
     if(treeNode::BINDING != topNode->childNode->type){
-        printf ("Subtree not standardised: case LET");
+        printf ("Subtree is not standardised: case LET");
     }
 
     topNode->type = treeNode::GAMMA;
@@ -162,7 +157,7 @@ void TreeStandardizer::standardizeAND(treeNode* topNode){
         temp->childNode->siblingNode = NULL;
         *currentComma = temp->childNode;
         temp = temp->siblingNode;
-        currentComma = &((*currentComma)->siblingNode); // Can your code BE any more UGLY?
+        currentComma = &((*currentComma)->siblingNode);
         currentTau = &((*currentTau)->siblingNode);
     }
 
@@ -187,7 +182,7 @@ void TreeStandardizer::standardizeAT(treeNode* topNode){
 
 }
 
-//It doesn't get uglier than this
+// It doesn't get uglier than this
 void TreeStandardizer::standardize(treeNode* topNode){
     treeNode *p, *e, *e1, *e2, *x, *x1, *x2, *n, *temp, *new_temp;
     string origString = topNode->nodeString;

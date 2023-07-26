@@ -1,9 +1,4 @@
-/*
- * parser.h
- *
- *  Created on: Mar 1, 2016
- *      Author: sachin
- */
+
 
 #ifndef PARSER_H_
 #define PARSER_H_
@@ -52,7 +47,7 @@ private:
 
 	void parse();
 	void standardize(treeNode*);
-    void buildTree(string, int); //Tree node name & child nodes num
+    void buildTree(string, int); 
     void buildTree(string, int, int);
     void treePrettyPrint(treeNode*, int);
     void read(string);
@@ -60,4 +55,4 @@ private:
 	string to_s(treeNode*);
 };
 
-#endif /* PARSER_H_ */
+#endif 

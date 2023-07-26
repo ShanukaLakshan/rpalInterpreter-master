@@ -1,9 +1,4 @@
-/*
- * Environment.h
- *
- *  Created on: Apr 22, 2016
- *      Author: sachin
- */
+
 
 #ifndef RPAL_COMPILER_ENVIRONMENT_H_
 #define RPAL_COMPILER_ENVIRONMENT_H_
@@ -26,4 +21,4 @@ public:
     map<string, Control *> symbolTable;
 };
 
-#endif /* RPAL_COMPILER_ENVIRONMENT_H_ */
+#endif

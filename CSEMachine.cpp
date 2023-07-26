@@ -1,9 +1,4 @@
-/*
- * CSEMachine.cpp
- *
- *  Created on: Apr 21, 2016
- *      Author: sachin
- */
+
 
 #include "CSEMachine.h"
 
@@ -269,7 +264,7 @@ void CSEMachine::applyThisRator(Control* rator){
     Control* toPush;
     if(rator->variables.front() == "Print"){
         string print_str = execStack.top()->toStr();
-        escapePrintStr(print_str); //WHY?
+        escapePrintStr(print_str); 
         execStack.pop();
         toPush = new Control(Control::DUMMY);
     }else if(rator->variables.front() == "Order"){
@@ -448,7 +443,7 @@ void CSEMachine::handleGAMMA(Control* temp, Control* currControl, Control* rator
         rule12(temp, currControl, rator, newEnv, deltaIndex);
     } else if( rator->type == Control::ETA ){
         rule13(temp, currControl, rator, newEnv, deltaIndex);
-    }else if(rator->type == Control::TUPLE){ //Rule 10
+    }else if(rator->type == Control::TUPLE){ 
         rule10(temp, currControl, rator, newEnv, deltaIndex);
     } else {
         applyThisRator(rator);
@@ -534,7 +529,6 @@ void CSEMachine::execCSE(){
     Environment *newEnv = NULL;
     int deltaIndex = -1;
     while(!control.empty()){
-        //printCS();
         currControl = control.at(control.size()-1);
         temp = NULL;
         switch(currControl->type){
@@ -555,7 +549,7 @@ void CSEMachine::execCSE(){
             control.pop_back();
             execStack.push(currControl) ;
             break ;
-        case Control::LAMBDA : //CSE Rule 2
+        case Control::LAMBDA : 
             currControl->associatedENV = currEnvironment->id;
             control.pop_back();
             execStack.push(currControl) ;
@@ -573,7 +567,6 @@ void CSEMachine::execCSE(){
                 exit(1) ;
             }
             break ;
-        //CSE Rule 6
         case Control::GR :
         case Control::GE :
         case Control::LS :
@@ -593,7 +586,7 @@ void CSEMachine::execCSE(){
         case Control::TAU:
             handleTau(temp, currControl, rator, newEnv, deltaIndex);
             break ;
-        case Control::NEG : //CSE Rule 7
+        case Control::NEG :
             handleNeg(temp, currControl, rator, newEnv, deltaIndex);
             break ;
         case Control::ENV:
@@ -648,7 +641,6 @@ void CSEMachine::deltaPrint(){
 void CSEMachine::init(treeNode *root){
     deltas->push_back(rootDelta);
     flattenTree(root,rootDelta, deltas);
-    //deltaPrint();
     control.push_back(new Control(Control::ENV, 0, false));
     execStack.push(new Control(Control::ENV, 0, false));
     for(int i=0; i< rootDelta->ctrlStruct->size(); i++)
@@ -670,7 +662,7 @@ void CSEMachine::run(treeNode *root){
 void CSEMachine::flattenDeltaThen(treeNode* node, Control *delta,vector<Control *> *deltas){
     Control *deltaThen = new Control(Control::DELTA, deltas->size());
     deltas->push_back(deltaThen);
-    delta->ctrlStruct->push_back(new Control(Control::DELTA, deltas->size()-1)); //delta then
+    delta->ctrlStruct->push_back(new Control(Control::DELTA, deltas->size()-1)); 
     if(node->childNode->siblingNode->type == treeNode::TERNARY){
         flattenTree(node->childNode->siblingNode, deltaThen, deltas);
     }else{
@@ -679,7 +671,7 @@ void CSEMachine::flattenDeltaThen(treeNode* node, Control *delta,vector<Control 
             treeNode *temp = node->childNode->siblingNode->childNode;
             tempvariables = new vector<string>;
             while(temp!= NULL){
-                tempvariables->push_back(temp->nodeString); // will these be any useful
+                tempvariables->push_back(temp->nodeString); 
                 temp = temp->siblingNode;
             }
         }

@@ -1,9 +1,3 @@
-/*
- * TreeStandardizer.h
- *
- *  Created on: Apr 20, 2016
- *      Author: sachin
- */
 
 #ifndef TREESTANDARDIZER_H_
 #define TREESTANDARDIZER_H_
@@ -13,7 +7,10 @@
 
 using namespace std;
 
+// This class is used to standardize the tree. It is used to convert the tree
+// into a form that is easier to work with. It is used to convert the tree
 class TreeStandardizer {
+    // The top node of the tree
     void standardize(treeNode*);
     void standardizeLET(treeNode*);
     void standardizeWHERE(treeNode*);

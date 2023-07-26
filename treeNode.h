@@ -1,9 +1,4 @@
-/*
- * treeNode.h
- *
- *  Created on: Apr 20, 2016
- *      Author: sachin
- */
+
 
 #ifndef RPAL_COMPILER_TREENODE_H_
 #define RPAL_COMPILER_TREENODE_H_
@@ -63,4 +58,4 @@ public:
 };
 
 
-#endif /* RPAL_COMPILER_TREENODE_H_ */
+#endif

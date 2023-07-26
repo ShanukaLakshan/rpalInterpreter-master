@@ -1,9 +1,4 @@
-/*
- * p1.cpp
- *
- *  Created on: Mar 1, 2016
- *      Author: Sachin Edlabadkar
- */
+
 #include <stdio.h>
 #include <string.h>
 #include <fstream>
@@ -89,7 +84,6 @@ int main (int argc, char *argv[]){
 		exec();
 		source.close();
 	} else {
-		printf ("[rpal Compiler \n Author: Sachin Edlabadkar]\n\n");
 		printf ("Usage: ./p1 [-l] [-ast] [-noout] [-st] <filename>\n\n");
 	}
 }
