@@ -1,0 +1,4 @@
+let sign = fn x. 
+	x ls 0 -> 'negative' | 'positive'
+in
+Print(sign(10))
