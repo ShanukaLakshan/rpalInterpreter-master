@@ -486,26 +486,30 @@ void parser::Db(){
 }
 
 
-void parser::Vb(){
-	if (PARSERLOGS) printf ("Proc Vb next token = %s\n", nextToken->tokValue.c_str());
-	if(nextToken->tokType == TOK_IDENTIFIER){
-		buildTree(nextToken->tokValue, 0, treeNode::IDENTIFIER);
-		read(nextToken->tokValue);
-	}else if (nextToken->tokValue == "("){
-		read("(");
-		if (nextToken->tokValue == ")"){
-			read(")");
-			buildTree("()", 0, treeNode::PARANTHESES);
-		} else if (nextToken->tokType == TOK_IDENTIFIER){
-		    //Before getting into Vl, an identifier must be read
-		    //Vl expects its caller to do this.
-			buildTree(nextToken->tokValue, 0, treeNode::IDENTIFIER);
-			read(nextToken->tokValue);
-			Vl();
-			read(")");
-		}
-	}
+
+void parser::Vb() {
+    if (PARSERLOGS)
+        printf("Proc Vb next token = %s\n", nextToken->tokValue.c_str());
+    if (nextToken->tokType == TOK_IDENTIFIER) {
+        buildTree(nextToken->tokValue, 0, treeNode::IDENTIFIER);
+        read(nextToken->tokValue);
+    } else if (nextToken->tokValue == "(") {
+        read("(");
+        if (nextToken->tokValue == ")") {
+            read(")");
+            buildTree("()", 0, treeNode::PARANTHESES);
+        } else if (nextToken->tokType == TOK_IDENTIFIER) {
+            // Before getting into Vl, an identifier must be read
+            buildTree(nextToken->tokValue, 0, treeNode::IDENTIFIER);
+            read(nextToken->tokValue);
+            Vl();
+            read(")");
+        } else {
+            printf("ERROR In Vb()\n");
+        }
+    }
 }
+
 
 void parser::Vl() {
     if (PARSERLOGS) 
