@@ -1,5 +1,3 @@
-
-
 #include "parser.h"
 
 parser::parser(lexer* lexr){
@@ -76,49 +74,39 @@ void parser::read(string tokStr){
     }while (nextToken->tokType == TOK_DELETE);
 }
 
-void parser::buildTree(string nodeStr, int numChildNodes, int type){
-    if (PARSERLOGS) printf ("buildTree. Current Tree Size = %d, Node to add = %s, numChild = %d\n", (int)treeStack.size(), nodeStr.c_str(), numChildNodes);
-    int finalSize = treeStack.size() - numChildNodes + 1;
+void parser::buildTree(string nodeStr, int numChildNodes, int type) {
+    if (PARSERLOGS) printf("buildTree. Current Tree Size = %d, Node to add = %s, numChild = %d\n", (int)treeStack.size(), nodeStr.c_str(), numChildNodes);
+
+    if (numChildNodes == 0) {
+        treeNode* newNode = new treeNode();
+        newNode->nodeString = nodeStr;
+        newNode->type = type;
+        treeStack.push(newNode);
+        if (PARSERLOGS) printf("New Node added. Stack Size = %d\n", (int)treeStack.size());
+        return;
+    }
+
+    if (treeStack.size() < numChildNodes) {
+        printf("Parse Error: Insufficient nodes on the stack for building the tree.\n");
+        exit(0);
+    }
+
     treeNode* newNode = new treeNode();
-    treeNode* tempNode = new treeNode();
     newNode->nodeString = nodeStr;
     newNode->type = type;
-    if (numChildNodes == 0){
-        treeStack.push(newNode);
-        if (PARSERLOGS) printf ("New Node added. Stack Size = %d\n", (int)treeStack.size());
-        return;
-    }
-    if (treeStack.empty()){
-        if (PARSERLOGS) printf ("We were asked to pop but the stack is empty\n");
-        return;
-    } else {
-        while ((numChildNodes - 1) > 0){
-            if (!treeStack.empty()){
-                tempNode = treeStack.top();
-                treeStack.pop();
-                if (treeStack.size() != 0){
-                    treeStack.top()->siblingNode = tempNode;
-                } else if (treeStack.size() == 0) { 
-					//Stack cannot be empty here. We have one more element to pop before we can build/push the requested tree
-                    printf ("Parse Error: Empty Stack\n");
-                    exit(0);
-                }
-                numChildNodes--;
-            } else {
-                if (PARSERLOGS) printf ("Stack size is less than numChildNodes. Abort.\n");
-                return;
-            }
-        }
-        tempNode = treeStack.top();
-        newNode->childNode = tempNode;
+
+    // Connect child nodes
+    for (int i = numChildNodes - 1; i >= 0; i--) {
+        treeNode* tempNode = treeStack.top();
         treeStack.pop();
+        tempNode->siblingNode = newNode->childNode;
+        newNode->childNode = tempNode;
     }
+
     treeStack.push(newNode);
-    if (finalSize != treeStack.size()){
-        if (PARSERLOGS) printf ("Something went horribly wrong in build tree function\n");
-    }
-    if (PARSERLOGS) printf ("BuildTree Success. Stack Size = %d\n", (int)treeStack.size());
+    if (PARSERLOGS) printf("BuildTree Success. Stack Size = %d\n", (int)treeStack.size());
 }
+
 
 string parser::to_s(treeNode* node)
  {
