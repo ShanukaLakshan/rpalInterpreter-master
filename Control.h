@@ -47,7 +47,8 @@ public:
     TUPLE = 33
     };
   string toStr();
-  Control( Control *cntrl);
+  string toStr() const;
+  Control(Control *cntrl);
   Control(Control::Type type, int index);
   Control(Control::Type type,vector<string> *variables, Control *del_ptr, int delta_index);
   Control(Control::Type type, int index, bool watever);
