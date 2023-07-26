@@ -457,33 +457,43 @@ void parser::Dr(){
 }
 
 
-void parser::Db(){
-	if (PARSERLOGS) printf ("Proc Db next token = %s\n", nextToken->tokValue.c_str());
-	if (nextToken->tokValue == "("){
-		read("(");
-		D();
-		read(")");
-	} else if (nextToken->tokType == TOK_IDENTIFIER){
-	    //Since identifier type is common here, read it here now and consider it for build tree later.
-		buildTree(nextToken->tokValue, 0, treeNode::IDENTIFIER);
-		read(nextToken->tokValue);
-		if (nextToken->tokValue == "," || nextToken->tokValue == "="){
-			Vl();
-			read("=");
-			E();
-			buildTree ("=", 2, treeNode::BINDING);
-		} else {
-			int n = 0;
-			do {
-				Vb();
-				n++;
-			}while (nextToken->tokValue == "(" || nextToken->tokType == TOK_IDENTIFIER);
-			read("=");
-			E();
-			buildTree("function_form", n+2, treeNode::FCN_FORM); //The identifier at the start of this function is included here as n + 2
-		}
-	}
+void parser::Db() {
+    if (PARSERLOGS)
+        printf("Proc Db next token = %s\n", nextToken->tokValue.c_str());
+
+    if (nextToken->tokValue == "(") {
+        read("(");
+        D();
+        read(")");
+    } else if (nextToken->tokType == TOK_IDENTIFIER) {
+        // Since identifier type is common here, read it here now and consider it for build tree later.
+        buildTree(nextToken->tokValue, 0, treeNode::IDENTIFIER);
+        read(nextToken->tokValue);
+
+        if (nextToken->tokValue == "," || nextToken->tokValue == "=") {
+            Vl();
+            read("=");
+            E();
+            buildTree("=", 2, treeNode::BINDING);
+        } else {
+            int n = 0;
+            do {
+                Vb();
+                n++;
+            } while (nextToken->tokValue == "(" || nextToken->tokType == TOK_IDENTIFIER);
+
+            read("=");
+            E();
+            buildTree("function_form", n + 2, treeNode::FCN_FORM);
+            // The identifier at the start of this function is included here as n + 2
+        }
+    } else {
+        // Add appropriate error handling for cases where none of the conditions are met.
+        printf("ERROR In Db()\n");
+       
+    }
 }
+
 
 
 
