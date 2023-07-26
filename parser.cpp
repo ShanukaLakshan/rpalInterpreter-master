@@ -381,80 +381,93 @@ void parser::R(){
 }
 
 
-void parser::Rn(){
-	if (PARSERLOGS) printf ("Proc Rn next token = %s\n", nextToken->tokValue.c_str());
-	if("(" == nextToken->tokValue){
-		read("(");
-		E();
-		read(")");
-	}
-	else if(TOK_IDENTIFIER == nextToken->tokType || TOK_INTEGER == nextToken->tokType || TOK_STRING == nextToken->tokType){
-		if("true" == nextToken->tokValue){
-			read("true");
-			buildTree("<true>", 0, treeNode::TRUE);
-		}
-		else if("false" == nextToken->tokValue){
-			read("false");
-			buildTree("<false>", 0, treeNode::FALSE);
-		}
-		else if("nil" == nextToken->tokValue){
-			read("nil");
-			buildTree("<nil>", 0, treeNode::NIL);
-		}
-		else if("dummy" == nextToken->tokValue){
-			read("dummy");
-			buildTree("<dummy>",0, treeNode::DUMMY);
-		}
-		else if(TOK_IDENTIFIER == nextToken->tokType){
-			buildTree(nextToken->tokValue, 0, treeNode::IDENTIFIER);
-			read(nextToken->tokValue);
-			if (PARSERLOGS) printf ("next Token = %s\n", nextToken->tokValue.c_str());
-		}
-		else if(TOK_STRING == nextToken->tokType){
-			buildTree(nextToken->tokValue, 0, treeNode::STRING);
-			read(nextToken->tokValue);
-		}
-		else if(TOK_INTEGER == nextToken->tokType){
-			buildTree(nextToken->tokValue, 0, treeNode::INTEGER);
-			read(nextToken->tokValue);
-		}
-	}
+void parser::Rn() {
+    if (PARSERLOGS)
+        printf("Proc Rn next token = %s\n", nextToken->tokValue.c_str());
+
+    if (nextToken->tokType == TOK_IDENTIFIER || nextToken->tokType == TOK_INTEGER || nextToken->tokType == TOK_STRING) {
+        if (nextToken->tokValue == "true") {
+            read("true");
+            buildTree("<true>", 0, treeNode::TRUE);
+        } else if (nextToken->tokValue == "false") {
+            read("false");
+            buildTree("<false>", 0, treeNode::FALSE);
+        } else if (nextToken->tokValue == "nil") {
+            read("nil");
+            buildTree("<nil>", 0, treeNode::NIL);
+        } else if (nextToken->tokValue == "dummy") {
+            read("dummy");
+            buildTree("<dummy>", 0, treeNode::DUMMY);
+        } else if (nextToken->tokType == TOK_IDENTIFIER) {
+            buildTree(nextToken->tokValue, 0, treeNode::IDENTIFIER);
+            read(nextToken->tokValue);
+            if (PARSERLOGS)
+                printf("next Token = %s\n", nextToken->tokValue.c_str());
+        } else if (nextToken->tokType == TOK_STRING) {
+            buildTree(nextToken->tokValue, 0, treeNode::STRING);
+            read(nextToken->tokValue);
+        } else if (nextToken->tokType == TOK_INTEGER) {
+            buildTree(nextToken->tokValue, 0, treeNode::INTEGER);
+            read(nextToken->tokValue);
+        }
+    } else if (nextToken->tokValue == "(") {
+        read("(");
+        E();
+        read(")");
+    }
 }
 
 
-void parser::D(){
-	if (PARSERLOGS) printf ("Proc D next token = %s\n", nextToken->tokValue.c_str());
-	Da();
-	if (nextToken->tokValue == "within"){
-		read("within");
-		D();
-		buildTree("within", 2, treeNode::WITHIN);
-	}
+
+
+
+
+void parser::D() {
+    if (PARSERLOGS)
+        printf("Proc D next token = %s\n", nextToken->tokValue.c_str());
+
+    Da();
+    
+    if (nextToken->tokValue == "within") {
+        read("within");
+        D();
+        buildTree("within", 2, treeNode::WITHIN);
+    }
 }
 
-void parser::Da(){
-	if (PARSERLOGS) printf ("Proc Da next token = %s\n", nextToken->tokValue.c_str());
-	int n = 0;
-	Dr();
-	while (nextToken->tokValue == "and"){
-		read("and");
-		Dr();
-		n++;
-	}
-	if (n >0)
-		buildTree("and", n+1, treeNode::AND);
+
+
+void parser::Da() {
+    if (PARSERLOGS)
+        printf("Proc Da next token = %s\n", nextToken->tokValue.c_str());
+
+    int n = 0;
+    Dr();
+    
+    while (nextToken->tokValue == "and") {
+        read("and");
+        Dr();
+        n++;
+    }
+
+    if (n > 0) {
+        buildTree("and", n + 1, treeNode::AND);
+    }
 }
 
-void parser::Dr(){
-	if (PARSERLOGS) printf ("Proc Dr next token = %s\n", nextToken->tokValue.c_str());
-	if (nextToken->tokValue == "rec"){
-		read("rec");
-		Db();
-		buildTree("rec", 1, treeNode::REC);
-	} else {
-		Db();
-	}
+
+void parser::Dr() {
+    if (PARSERLOGS)
+        printf("Proc Dr next token = %s\n", nextToken->tokValue.c_str());
+    if (nextToken->tokValue == "rec") {
+        read("rec");
+        Db();
+        buildTree("rec", 1, treeNode::REC);
+    } else {
+        Db();
+    }
 }
+
 
 
 void parser::Db() {
